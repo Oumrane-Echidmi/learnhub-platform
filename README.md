@@ -2,6 +2,10 @@
 
 LearnHub is a modern, responsive web application built with React and Bootstrap 5 for online education. Users can browse courses, view detailed curriculum, check pricing plans, and contact support.
 
+<img width="1584" height="897" alt="Capture d&#39;écran 2026-01-04 140215" src="https://github.com/user-attachments/assets/f9158f62-e0a2-42ae-8728-ba36b77d4585" />
+
+
+
 ## Features
 
 - **Dynamic Course Pages**: View detailed course information, curriculum, instructor profiles, and student reviews.

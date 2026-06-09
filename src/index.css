@@ -5,9 +5,31 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.transition-all {
+  transition: all 0.3s ease !important;
+}
+
+.hover-shadow:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 1rem 3rem rgba(0,0,0,.175) !important;
+}
+
+[data-bs-theme='dark'] .card {
+  border-color: #373b3e !important;
+}
+
+[data-bs-theme='dark'] .bg-light {
+  background-color: #212529 !important;
+}
+
+[data-bs-theme='dark'] .text-dark {
+  color: #f8f9fa !important;
 }

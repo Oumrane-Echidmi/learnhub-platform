@@ -1,8 +1,12 @@
 
 
+import { useTheme } from '../context/ThemeContext';
+
 function Footer(){
+    const { isDarkMode } = useTheme();
+
     return(
-        <footer className="bg-dark text-white pt-5 pb-4 mt-auto">
+        <footer className={`${isDarkMode ? 'bg-black text-white' : 'bg-dark text-white'} pt-5 pb-4 mt-auto transition-all`}>
           <div className="container">
             <div className="row g-4 justify-content-between">
               {/* Brand Column */}

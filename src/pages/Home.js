@@ -1,9 +1,12 @@
+import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 import { Link } from 'react-router-dom';
 import coursesData from '../data/coursesData';
 import img1 from '../assets/images/home-1.png';
+import { useCart } from '../context/CartContext';
+import { useTheme } from '../context/ThemeContext';
 
 const stats = [
   { number: "50K+", label: "Active Students" },
@@ -14,7 +17,7 @@ const stats = [
 const features = [
   {
     id: 1,
-    iconClass: "bg-primary text-white", // Bootstrap classes for replacement
+    iconClass: "bg-primary text-white",
     path: "M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4l7 3.82 7-3.82v-4L12 17l-7-3.82z",
     title: "Expert Instructors",
     desc: "Learn from industry professionals with years of real-world experience."
@@ -36,6 +39,8 @@ const features = [
 ];
 
 function Home (){
+    const { addToCart, isInCart } = useCart();
+    const { isDarkMode } = useTheme();
 
     // Get the first 4 courses for the "Popular" section
     const popularCourses = coursesData.slice(0, 4);
@@ -43,23 +48,23 @@ function Home (){
     return(
         <>
   <Navbar />
-  
+
   {/* Hero Section */}
-  <section className="bg-light py-5">
+  <section className={`${isDarkMode ? 'bg-dark text-white' : 'bg-light text-dark'} py-5 transition-all`}>
     <div className="container py-5">
       <div className="row align-items-center">
         <div className="col-lg-6 mb-5 mb-lg-0">
-          <h1 className="display-4 fw-bold mb-4 text-dark">
+          <h1 className="display-4 fw-bold mb-4">
             Learn Anything,<br />
             Anytime, Anywhere
           </h1>
-          <p className="lead text-dark mb-4">
+          <p className="lead mb-4">
             Access thousands of courses from world-class instructors. Build skills
             that matter for your career and personal growth.
           </p>
           <div className="d-flex gap-3 mb-5">
-            <a href="#" className="btn btn-primary btn-lg">Get Started Free</a>
-            <a href="#" className="btn btn-outline-secondary btn-lg">Browse Courses</a>
+            <Link to="/courses" className="btn btn-primary btn-lg fw-bold px-4">Get Started Free</Link>
+            <Link to="/courses" className="btn btn-outline-secondary btn-lg fw-bold px-4">Browse Courses</Link>
           </div>
           <div className="d-flex gap-5">
             {stats.map((stat, index) => (
@@ -78,14 +83,14 @@ function Home (){
   </section>
 
   {/* Popular Courses Section */}
-  <section className="py-5 bg-white">
+  <section className="py-5">
     <div className="container py-5">
-      <div className="d-flex justify-content-between align-items-end mb-5">
+      <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-end mb-5 gap-3">
         <div>
           <h2 className="fw-bold mb-2">Popular Courses</h2>
           <p className="text-muted mb-0">Start learning with our most popular courses</p>
         </div>
-        <Link to="/courses" className="btn btn-outline-primary">
+        <Link to="/courses" className="btn btn-outline-primary fw-bold">
           View All Courses →
         </Link>
       </div>
@@ -93,7 +98,7 @@ function Home (){
       <div className="row g-4">
         {popularCourses.map((course) => (
           <div className="col-md-6 col-lg-3" key={course.id}>
-            <div className="card h-100 border-light shadow-sm hover-shadow transition-all">
+            <div className="card h-100 border-0 shadow-sm hover-shadow transition-all overflow-hidden bg-light">
                <div style={{position:'relative'}}>
                   <img src={course.image} className="card-img-top" alt={course.title} style={{height: '200px', objectFit: 'cover'}} />
                   <span className={`badge position-absolute top-0 start-0 m-3 ${
@@ -104,24 +109,32 @@ function Home (){
                     {course.badge}
                   </span>
                </div>
-              <div className="card-body">
-                <h5 className="card-title fw-bold text-dark">
-                    <Link to={`/course/${course.id}`} className="text-decoration-none text-dark stretched-link">
+              <div className="card-body p-4 d-flex flex-column">
+                <h5 className="card-title fw-bold">
+                    <Link to={`/course/${course.id}`} className="text-decoration-none text-dark">
                         {course.title}
                     </Link>
                 </h5>
                 <p className="card-text text-muted small mb-3">{course.desc.substring(0, 80)}...</p>
-                <div className="d-flex justify-content-between align-items-center pt-3 border-top">
-                  <div className="d-flex align-items-center">
-                    <img src={course.instructorImage} className="rounded-circle me-2" alt={course.author} style={{width:'32px', height:'32px', objectFit:'cover'}} />
-                    <small className="fw-semibold text-muted">{course.author}</small>
-                  </div>
-                  <div className="d-flex align-items-center text-warning small fw-bold">
-                    <span className="me-1">{course.rating}</span>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                       <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                    </svg>
-                  </div>
+                <div className="mt-auto pt-3 border-top">
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                        <div className="d-flex align-items-center">
+                            <img src={course.instructorImage} className="rounded-circle me-2" alt={course.author} style={{width:'32px', height:'32px', objectFit:'cover'}} />
+                            <small className="fw-semibold text-muted">{course.author}</small>
+                        </div>
+                        <div className="d-flex align-items-center text-warning small fw-bold">
+                            <span className="me-1">{course.rating}</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <button 
+                        className={`btn w-100 fw-bold ${isInCart(course.id) ? 'btn-success disabled' : 'btn-outline-primary'}`}
+                        onClick={() => addToCart(course)}
+                    >
+                        {isInCart(course.id) ? '✓ In Cart' : 'Add to Cart'}
+                    </button>
                 </div>
               </div>
             </div>
@@ -132,15 +145,15 @@ function Home (){
   </section>
 
   {/* Features Section */}
-  <section className="py-5 bg-light">
+  <section className={`${isDarkMode ? 'bg-dark' : 'bg-light'} py-5 transition-all`}>
     <div className="container py-5 text-center">
       <h2 className="fw-bold mb-3">Why Choose LearnHub?</h2>
       <p className="text-muted mb-5">Everything you need to succeed in your learning journey</p>
-      
+
       <div className="row g-4">
         {features.map((feature) => (
            <div className="col-md-4" key={feature.id}>
-             <div className="card h-100 border-0 shadow-sm p-4 text-start">
+             <div className="card h-100 border-0 shadow-sm p-4 text-start bg-body transition-all">
                <div className={`d-inline-flex align-items-center justify-content-center p-3 rounded-3 mb-3 ${feature.iconClass}`} style={{width: '60px', height: '60px'}}>
                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                     <path d={feature.path} />
